@@ -1,6 +1,6 @@
-# Postman to HTML Converter
+# Postman collection to HTML Converter
 
-A command-line tool to convert Postman collections into HTML documentation.
+A command-line tool to convert Postman collection into HTML documentation.
 
 ## Installation
 
