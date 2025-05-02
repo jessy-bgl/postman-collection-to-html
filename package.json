@@ -12,6 +12,12 @@
   "author": "jessy-bgl",
   "license": "MIT",
   "description": "Postman collection to HTML converter",
+  "keywords": [
+    "postman",
+    "postman-collection",
+    "postman-html",
+    "postman-documentation"
+  ],
   "dependencies": {
     "showdown": "^2.1.0"
   }
