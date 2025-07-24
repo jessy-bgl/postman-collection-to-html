@@ -48,9 +48,37 @@ try {
 }
 
 const converter = new showdown.Converter({
-  tables: true,
-  tasklists: true,
+  backslashEscapesHTMLTags: false,
+  completeHTMLDocument: false,
+  customizedHeaderId: false,
+  disableForced4SpacesIndentedSublists: false,
+  ellipsis: true,
+  emoji: false,
+  encodeEmails: false,
+  ghCodeBlocks: true,
+  ghCompatibleHeaderId: false,
+  ghMentions: false,
+  headerLevelStart: 1,
+  literalMidWordUnderscores: true,
+  metadata: false,
+  noHeaderId: false,
+  omitExtraWLInCodeBlocks: true,
+  openLinksInNewWindow: true,
+  parseImgDimensions: false,
+  prefixHeaderId: false,
+  rawHeaderId: false,
+  rawPrefixHeaderId: false,
+  requireSpaceBeforeHeadingText: false,
+  simpleLineBreaks: false,
+  simplifiedAutoLink: true,
+  smartIndentationFix: true,
+  smoothLivePreview: false,
+  splitAdjacentBlockquotes: false,
   strikethrough: true,
+  tables: true,
+  tablesHeaderId: false,
+  tasklists: true,
+  underline: false,
 });
 
 // Read the Postman collection file
@@ -102,7 +130,6 @@ function generateHtmlDocumentation(collection) {
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
-            color: #333;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
@@ -110,40 +137,47 @@ function generateHtmlDocumentation(collection) {
         
         header {
             margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
             padding-bottom: 20px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header-text {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .header-logo {
+            flex-shrink: 0;
+        }
+        
+        .logo {
+            height: 80px;
+            width: auto;
+            max-width: 350px;
         }
         
         .generation-date {
             color: var(--secondary-color);
-            font-size: 0.9rem;
+            font-size: 1rem;
             margin-top: 5px;
         }
         
         h1, h2, h3, h4, h5, h6 {
             margin-top: 1.5rem;
             margin-bottom: 1rem;
-            font-weight: 600;
-            line-height: 1.25;
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-        }
-        
+
         h2 {
-            font-size: 1.8rem;
-            padding-bottom: 0.3rem;
             border-bottom: 1px solid var(--border-color);
-            margin-top: 2.5rem;
         }
-        
-        h3 {
-            font-size: 1.4rem;
-            color: var(--secondary-color);
-        }
-        
+  
         p {
             margin-bottom: 1rem;
         }
@@ -181,7 +215,7 @@ function generateHtmlDocumentation(collection) {
         }
         
         .sidebar {
-            flex: 0 0 250px;
+            flex: 0 0 300px;
             position: sticky;
             top: 20px;
             max-height: calc(100vh - 40px);
@@ -304,6 +338,70 @@ function generateHtmlDocumentation(collection) {
             color: white;
         }
         
+        .response-example {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: #fafafa;
+        }
+        
+        .response-example h6 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+        
+        .response-example pre {
+            margin-top: 10px;
+            background-color: white;
+        }
+        
+        .response-body {
+            position: relative;
+        }
+        
+        .response-body.collapsed pre {
+            max-height: 240px;
+            overflow: hidden;
+        }
+        
+        .response-body.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(transparent, white);
+            pointer-events: none;
+        }
+        
+        .expand-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        .expand-button:hover {
+            background-color: #3654b8;
+        }
+        
+        .expand-button.expanded {
+            background-color: var(--secondary-color);
+        }
+        
+        .expand-button.expanded:hover {
+            background-color: #545b62;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -315,21 +413,45 @@ function generateHtmlDocumentation(collection) {
                 position: static;
                 max-height: none;
             }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-text {
+                order: 2;
+            }
+            
+            .header-logo {
+                order: 1;
+            }
+            
+            .logo {
+                height: 60px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>${info.name}</h1>
-        <div class="generation-date">Generated on: ${formattedDate}</div>
+        <div class="header-content">
+            <div class="header-text">
+                <h1>${info.name}</h1>
+                <div class="generation-date">Documentation générée le ${formattedDate}</div>
+            </div>
+            <div class="header-logo">
+                <img src="VXCORE-VMS-BLEU.svg" alt="VXCore VMS Logo" class="logo">
+            </div>
+        </div>
     </header>
     
     <div class="container">
         <div class="sidebar">
             <div class="toc">
-                <h2>Table of Contents</h2>
+                <h2>Table des matières</h2>
                 <ul>
-                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#overview">Généralités</a></li>
                     ${generateTableOfContents(folders)}
                 </ul>
             </div>
@@ -337,7 +459,6 @@ function generateHtmlDocumentation(collection) {
         
         <div class="content">
             <section id="overview">
-                <h2>Overview</h2>
                 ${converter.makeHtml(
                   info.description || "No description available."
                 )}
@@ -346,6 +467,30 @@ function generateHtmlDocumentation(collection) {
             ${generateFoldersContent(folders)}
         </div>
     </div>
+    
+    <script>
+        // Handle expand/collapse functionality for response examples
+        document.addEventListener('DOMContentLoaded', function() {
+            const expandButtons = document.querySelectorAll('.expand-button');
+            
+            expandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const responseBody = this.previousElementSibling;
+                    const isCollapsed = responseBody.classList.contains('collapsed');
+                    
+                    if (isCollapsed) {
+                        responseBody.classList.remove('collapsed');
+                        this.textContent = 'Réduire';
+                        this.classList.add('expanded');
+                    } else {
+                        responseBody.classList.add('collapsed');
+                        this.textContent = 'Afficher tout';
+                        this.classList.remove('expanded');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
   `;
@@ -359,55 +504,35 @@ function generateTableOfContents(folders) {
   let toc = "";
 
   folders.forEach((folder) => {
-    const folderId = getFolderId(folder.name);
-    toc += `<li><a href="#${folderId}">${folder.name}</a>`;
-
-    if (folder.item && folder.item.length > 0) {
-      toc += "<ul>";
-
-      if (hasNestedFolders(folder)) {
-        // Folder has nested folders
-        folder.item.forEach((subFolder) => {
-          if (isFolder(subFolder)) {
-            const subFolderId = getFolderId(`${folder.name}-${subFolder.name}`);
-            toc += `<li><a href="#${subFolderId}">${subFolder.name}</a>`;
-
-            if (subFolder.item && subFolder.item.length > 0) {
-              toc += "<ul>";
-              subFolder.item.forEach((endpoint) => {
-                if (!isFolder(endpoint)) {
-                  const endpointId = getEndpointId(
-                    folder.name,
-                    subFolder.name,
-                    endpoint.name
-                  );
-                  toc += `<li><a href="#${endpointId}">${endpoint.name}</a></li>`;
-                }
-              });
-              toc += "</ul>";
-            }
-
-            toc += "</li>";
-          } else {
-            // Direct endpoint under main folder
-            const endpointId = getEndpointId(folder.name, null, subFolder.name);
-            toc += `<li><a href="#${endpointId}">${subFolder.name}</a></li>`;
-          }
-        });
-      } else {
-        // Folder has only endpoints
-        folder.item.forEach((endpoint) => {
-          const endpointId = getEndpointId(folder.name, null, endpoint.name);
-          toc += `<li><a href="#${endpointId}">${endpoint.name}</a></li>`;
-        });
-      }
-
-      toc += "</ul>";
-    }
-
-    toc += "</li>";
+    toc += generateTocItem(folder, []);
   });
 
+  return toc;
+}
+
+function generateTocItem(item, parentPath) {
+  const itemPath = [...parentPath, item.name];
+  const itemId = getFolderId(itemPath.join("-"));
+  let toc = `<li><a href="#${itemId}">${item.name}</a>`;
+
+  if (item.item && item.item.length > 0) {
+    toc += "<ul>";
+
+    item.item.forEach((subItem) => {
+      if (isFolder(subItem)) {
+        // Recursive call for nested folders
+        toc += generateTocItem(subItem, itemPath);
+      } else {
+        // Direct endpoint
+        const endpointId = getEndpointId(itemPath, subItem.name);
+        toc += `<li><a href="#${endpointId}">${subItem.name}</a></li>`;
+      }
+    });
+
+    toc += "</ul>";
+  }
+
+  toc += "</li>";
   return toc;
 }
 
@@ -415,61 +540,48 @@ function generateFoldersContent(folders) {
   let content = "";
 
   folders.forEach((folder) => {
-    const folderId = getFolderId(folder.name);
-    content += `<section id="${folderId}">
-      <h2>${folder.name}</h2>`;
-
-    if (folder.description) {
-      content += `<div class="folder-description">${converter.makeHtml(
-        folder.description
-      )}</div>`;
-    }
-
-    if (hasNestedFolders(folder)) {
-      // Folder has nested folders
-      folder.item.forEach((subFolder) => {
-        if (isFolder(subFolder)) {
-          const subFolderId = getFolderId(`${folder.name}-${subFolder.name}`);
-          content += `<section id="${subFolderId}">
-            <h3>${subFolder.name}</h3>`;
-
-          if (subFolder.description) {
-            content += `<div class="folder-description">${converter.makeHtml(
-              subFolder.description
-            )}</div>`;
-          }
-
-          subFolder.item.forEach((endpoint) => {
-            if (!isFolder(endpoint)) {
-              content += generateEndpointContent(
-                folder.name,
-                subFolder.name,
-                endpoint
-              );
-            }
-          });
-
-          content += "</section>";
-        } else {
-          // Direct endpoint under main folder
-          content += generateEndpointContent(folder.name, null, subFolder);
-        }
-      });
-    } else {
-      // Folder has only endpoints
-      folder.item.forEach((endpoint) => {
-        content += generateEndpointContent(folder.name, null, endpoint);
-      });
-    }
-
-    content += "</section>";
+    content += generateFolderContent(folder, [], 2);
   });
 
   return content;
 }
 
-function generateEndpointContent(folderName, subFolderName, endpoint) {
-  const endpointId = getEndpointId(folderName, subFolderName, endpoint.name);
+function generateFolderContent(item, parentPath, headerLevel) {
+  const itemPath = [...parentPath, item.name];
+  const itemId = getFolderId(itemPath.join("-"));
+  const headerTag = `h${headerLevel}`;
+
+  let content = `<section id="${itemId}">
+    <${headerTag}>${item.name}</${headerTag}>`;
+
+  if (item.description) {
+    content += `<div class="folder-description">${converter.makeHtml(
+      item.description
+    )}</div>`;
+  }
+
+  if (item.item && item.item.length > 0) {
+    item.item.forEach((subItem) => {
+      if (isFolder(subItem)) {
+        // Recursive call for nested folders with increased header level
+        content += generateFolderContent(
+          subItem,
+          itemPath,
+          Math.min(headerLevel + 1, 6)
+        );
+      } else {
+        // Direct endpoint
+        content += generateEndpointContent(itemPath, subItem);
+      }
+    });
+  }
+
+  content += "</section>";
+  return content;
+}
+
+function generateEndpointContent(parentPath, endpoint) {
+  const endpointId = getEndpointId(parentPath, endpoint.name);
   const request = endpoint.request;
 
   if (!request) {
@@ -485,15 +597,15 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
   // Format URL
   let url = "";
   if (typeof request.url === "string") {
-    url = request.url;
+    url = cleanPostmanVariables(request.url);
   } else if (request.url && request.url.raw) {
-    url = request.url.raw;
+    url = cleanPostmanVariables(request.url.raw);
   }
 
   // Format URL path
   let urlPath = "";
   if (request.url && request.url.path) {
-    urlPath = "/" + request.url.path.join("/");
+    urlPath = "/" + request.url.path.map(cleanPostmanVariables).join("/");
   }
 
   // Get query parameters
@@ -518,22 +630,29 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
       <span class="url-path">${urlPath || url}</span>
     </div>
     
-    <h4>${endpoint.name}</h4>
+    <h3>${endpoint.name}</h3>
     
     ${
-      endpoint.description
+      endpoint.description || request.description
         ? `<div class="endpoint-description">${converter.makeHtml(
-            endpoint.description
+            endpoint.description || request.description
           )}</div>`
         : ""
     }
     
     <div class="endpoint-details">`;
 
-  // Query Parameters
-  if (queryParams.length > 0) {
+  // Query Parameters (exclude token as it's explained in the main description)
+  const filteredQueryParams = queryParams.filter(
+    (param) =>
+      param.key &&
+      param.key.toLowerCase() !== "token" &&
+      param.key.toLowerCase() !== "key"
+  );
+
+  if (filteredQueryParams.length > 0) {
     endpointContent += `<div class="params-section">
-      <h5>Query Parameters</h5>
+      <h4>Query Parameters</h4>
       <table>
         <thead>
           <tr>
@@ -544,11 +663,11 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
         </thead>
         <tbody>`;
 
-    queryParams.forEach((param) => {
+    filteredQueryParams.forEach((param) => {
       endpointContent += `<tr>
         <td>${param.key}</td>
-        <td>${param.value || ""}</td>
-        <td>${param.description || ""}</td>
+        <td>${cleanPostmanVariables(param.value || "")}</td>
+        <td>${escapeHtml(param.description || "")}</td>
       </tr>`;
     });
 
@@ -573,7 +692,7 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
     headers.forEach((header) => {
       endpointContent += `<tr>
         <td>${header.key}</td>
-        <td>${header.value || ""}</td>
+        <td>${cleanPostmanVariables(header.value || "")}</td>
       </tr>`;
     });
 
@@ -587,7 +706,7 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
     const body = request.body;
 
     if (body.mode === "raw" && body.raw) {
-      let rawBody = body.raw;
+      let rawBody = cleanPostmanVariables(body.raw);
       let language = "text";
 
       if (body.options && body.options.raw && body.options.raw.language) {
@@ -595,14 +714,12 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
       }
 
       endpointContent += `<div class="params-section">
-        <h5>Request Body</h5>
-        <pre><code class="language-${language}">${escapeHtml(
-        rawBody
-      )}</code></pre>
+        <h4>Request Body</h4>
+        <pre><code class="language-${language}">${rawBody}</code></pre>
       </div>`;
     } else if (body.mode === "formdata" && body.formdata) {
       endpointContent += `<div class="params-section">
-        <h5>Form Data</h5>
+        <h4>Form Data</h4>
         <table>
           <thead>
             <tr>
@@ -616,7 +733,7 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
       body.formdata.forEach((param) => {
         endpointContent += `<tr>
           <td>${param.key}</td>
-          <td>${param.value || ""}</td>
+          <td>${cleanPostmanVariables(param.value || "")}</td>
           <td>${param.type || "text"}</td>
         </tr>`;
       });
@@ -627,35 +744,112 @@ function generateEndpointContent(folderName, subFolderName, endpoint) {
     }
   }
 
+  // Response Examples
+  if (endpoint.response && endpoint.response.length > 0) {
+    endpointContent += `<div class="params-section">
+      <h4>Response Examples</h4>`;
+
+    endpoint.response.forEach((response, index) => {
+      // Determine content type from headers
+      let contentType = "text/plain";
+      let language = "text";
+
+      if (response.header) {
+        const contentTypeHeader = response.header.find(
+          (h) => h.key && h.key.toLowerCase() === "content-type"
+        );
+        if (contentTypeHeader && contentTypeHeader.value) {
+          contentType = contentTypeHeader.value.toLowerCase();
+
+          // Map content types to languages for syntax highlighting
+          if (contentType.includes("json")) {
+            language = "json";
+          } else if (contentType.includes("xml")) {
+            language = "xml";
+          } else if (contentType.includes("html")) {
+            language = "html";
+          } else if (contentType.includes("javascript")) {
+            language = "javascript";
+          }
+        }
+      }
+
+      // Use _postman_previewlanguage if available
+      if (response._postman_previewlanguage) {
+        language = response._postman_previewlanguage;
+      }
+
+      endpointContent += `<div class="response-example">
+        ${
+          contentType !== "text/plain"
+            ? `<p><strong>Content-Type:</strong> ${contentType}</p>`
+            : ""
+        }`;
+
+      if (response.body) {
+        // Format the response body based on content type
+        let formattedBody = response.body;
+
+        // Try to pretty-print JSON
+        if (language === "json") {
+          try {
+            const parsed = JSON.parse(response.body);
+            formattedBody = JSON.stringify(parsed, null, 2);
+          } catch (e) {
+            // Keep original if parsing fails
+            formattedBody = response.body;
+          }
+        }
+
+        // Check if response is long (more than 10 lines)
+        const lineCount = formattedBody.split("\n").length;
+        const isLong = lineCount > 10;
+
+        endpointContent += `<div class="response-body${
+          isLong ? " collapsed" : ""
+        }">
+          <pre><code class="language-${language}">${formattedBody}</code></pre>
+        </div>`;
+
+        if (isLong) {
+          endpointContent += `<button class="expand-button">Afficher tout</button>`;
+        }
+      }
+
+      endpointContent += `</div>`;
+    });
+
+    endpointContent += `</div>`;
+  }
+
   endpointContent += `</div>
   </div>`;
 
   return endpointContent;
 }
 
-function hasNestedFolders(folder) {
-  if (!folder.item || folder.item.length === 0) {
-    return false;
-  }
-
-  return folder.item.some((item) => isFolder(item));
-}
-
 function isFolder(item) {
   return item.item && Array.isArray(item.item);
 }
 
-function getFolderId(folderName) {
-  return `folder-${slugify(folderName)}`;
+function getFolderId(folderPath) {
+  if (typeof folderPath === "string") {
+    return `folder-${slugify(folderPath)}`;
+  }
+  // For array of path segments
+  return `folder-${folderPath.map(slugify).join("-")}`;
 }
 
-function getEndpointId(folderName, subFolderName, endpointName) {
-  if (subFolderName) {
-    return `endpoint-${slugify(folderName)}-${slugify(subFolderName)}-${slugify(
+function getEndpointId(parentPath, endpointName) {
+  if (Array.isArray(parentPath)) {
+    return `endpoint-${parentPath.map(slugify).join("-")}-${slugify(
       endpointName
     )}`;
   }
-  return `endpoint-${slugify(folderName)}-${slugify(endpointName)}`;
+  if (typeof parentPath === "string") {
+    return `endpoint-${slugify(parentPath)}-${slugify(endpointName)}`;
+  }
+  return `endpoint-${slugify(endpointName)}`;
 }
 
 function slugify(text) {
@@ -669,11 +863,19 @@ function slugify(text) {
     .replace(/-+$/, "");
 }
 
+function cleanPostmanVariables(text) {
+  if (typeof text !== "string") return text;
+  // Remove Postman variables in the format {{VARIABLE_NAME}}
+  return text.replace(/\{\{([^}]+)\}\}/g, "$1");
+}
+
 function escapeHtml(text) {
   return text
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(/'/g, "&#039;")
+    .replace(/\n/g, "<br>")
+    .replace(/\\n/g, "<br>");
 }
