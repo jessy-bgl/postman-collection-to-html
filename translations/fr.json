@@ -1,0 +1,21 @@
+{
+  "documentationGenerated": "Documentation générée le",
+  "tableOfContents": "Table des matières",
+  "overview": "Généralités",
+  "queryParameters": "Query Parameters",
+  "parameter": "Paramètre",
+  "value": "Valeur",
+  "description": "Description",
+  "headers": "Headers",
+  "name": "Nom",
+  "requestBody": "Request Body",
+  "formData": "Form Data",
+  "key": "Clé",
+  "type": "Type",
+  "responseExample": "Exemple de réponse",
+  "contentType": "Content-Type",
+  "showAll": "Afficher tout",
+  "collapse": "Réduire",
+  "noDescriptionAvailable": "Aucune description disponible.",
+  "noRequestInfoAvailable": "Aucune information de requête disponible."
+}

@@ -2,12 +2,26 @@
   "name": "postman-collection-to-html",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "postman-collection-to-html": "cli.js"
+  },
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessy-bgl/postman-collection-to-html.git"
   },
   "author": "jessy-bgl",
   "license": "MIT",
   "description": "Postman collection to HTML converter",
+  "keywords": [
+    "postman",
+    "postman-collection",
+    "postman-html",
+    "postman-documentation"
+  ],
   "dependencies": {
     "showdown": "^2.1.0"
   }

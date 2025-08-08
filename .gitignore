@@ -1,3 +1,4 @@
 node_modules/
-*.postman_collection.json
-api-doc.html
+*collection.json
+*.svg
+*.html

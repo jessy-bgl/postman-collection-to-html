@@ -1,0 +1,21 @@
+{
+  "documentationGenerated": "Documentation generated on",
+  "tableOfContents": "Table of Contents",
+  "overview": "Overview",
+  "queryParameters": "Query Parameters",
+  "parameter": "Parameter",
+  "value": "Value",
+  "description": "Description",
+  "headers": "Headers",
+  "name": "Name",
+  "requestBody": "Request Body",
+  "formData": "Form Data",
+  "key": "Key",
+  "type": "Type",
+  "responseExample": "Response Example",
+  "contentType": "Content-Type",
+  "showAll": "Show All",
+  "collapse": "Collapse",
+  "noDescriptionAvailable": "No description available.",
+  "noRequestInfoAvailable": "No request information available."
+}
