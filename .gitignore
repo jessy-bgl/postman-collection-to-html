@@ -2,3 +2,4 @@ node_modules/
 *collection.json
 *.svg
 *.html
+*.sh

@@ -36,8 +36,11 @@ npx postman-collection-to-html my-collection.json --lang=fr
 # Include a logo
 npx postman-collection-to-html my-collection.json --logo=path/to/logo.svg
 
+# Add border-bottom to h1 headings
+npx postman-collection-to-html my-collection.json --divider=h1
+
 # All options together
-npx postman-collection-to-html my-collection.json --output=docs.html --lang=fr --logo=assets/logo.svg
+npx postman-collection-to-html my-collection.json --output=docs.html --lang=fr --logo=assets/logo.svg --divider=h1
 ```
 
 ### Command Line Options
@@ -46,6 +49,7 @@ npx postman-collection-to-html my-collection.json --output=docs.html --lang=fr -
 - `--output=filename.html`: Output HTML file name (optional, defaults to "api-doc.html")
 - `--lang=language`: Language for the documentation (optional, defaults to "en")
 - `--logo=logo.svg`: Path to SVG logo file to embed (optional)
+- `--divider=h1|h2|h3|h4|h5|h6`: Heading level to add border-bottom styling (optional)
 
 ### Supported Languages
 
@@ -65,6 +69,7 @@ collectionToHTML("collection.json");
 collectionToHTML("collection.json", {
   outputFile: "my-api-docs.html",
   language: "fr",
+  divider: "h2",
 });
 
 // Generate documentation with a logo
@@ -81,6 +86,7 @@ collectionToHTML("collection.json", {
 - `outputFile` (string, optional): Output HTML file name (defaults to "api-doc.html")
 - `language` (string, optional): Language for the documentation (defaults to "en")
 - `logo` (string, optional): SVG content to embed as logo (defaults to null)
+- `divider` (string, optional): Heading level (h1-h6) to add border-bottom styling
 
 ## Logo Support
 

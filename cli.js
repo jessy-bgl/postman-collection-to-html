@@ -7,7 +7,7 @@ import { collectionToHTML } from "./index.js";
 // Parse and validate command-line arguments
 if (argv.length < 3) {
   console.error(
-    "Usage: node cli.js <input-file.json> [--output=output-file.html] [--lang=language] [--logo=logo.svg]"
+    "Usage: node cli.js <input-file.json> [--output=output-file.html] [--lang=language] [--logo=logo.svg] [--divider=h1|h2|h3|h4|h5|h6]"
   );
   console.error("Options:");
   console.error(
@@ -17,6 +17,9 @@ if (argv.length < 3) {
     "  --lang=language       Language for documentation (default: en)"
   );
   console.error("  --logo=logo.svg       SVG logo file to embed (optional)");
+  console.error(
+    "  --divider=h1-h6       Heading level to add border-bottom (optional)"
+  );
   console.error("Available languages: en (English), fr (French)");
   process.exit(1);
 }
@@ -26,6 +29,7 @@ const inputFile = argv[2];
 let outputFile = "api-doc.html";
 let language = "en";
 let logoPath = null;
+let divider = null;
 
 // Parse remaining arguments
 for (let i = 3; i < argv.length; i++) {
@@ -36,6 +40,8 @@ for (let i = 3; i < argv.length; i++) {
     outputFile = arg.split("=")[1];
   } else if (arg.startsWith("--logo=")) {
     logoPath = arg.split("=")[1];
+  } else if (arg.startsWith("--divider=")) {
+    divider = arg.split("=")[1];
   } else {
     console.error(`Unknown argument: ${arg}`);
     console.error("Use --help for usage information");
@@ -48,6 +54,14 @@ const supportedLanguages = ["en", "fr"];
 if (!supportedLanguages.includes(language)) {
   console.error(`Unsupported language: ${language}`);
   console.error(`Available languages: ${supportedLanguages.join(", ")}`);
+  process.exit(1);
+}
+
+// Validate divider if provided
+const validDividers = ["h1", "h2", "h3", "h4", "h5", "h6"];
+if (divider && !validDividers.includes(divider)) {
+  console.error(`Invalid divider: ${divider}`);
+  console.error(`Valid dividers: ${validDividers.join(", ")}`);
   process.exit(1);
 }
 
@@ -70,6 +84,7 @@ try {
     outputFile,
     language,
     logo,
+    divider,
   });
   console.log(
     `HTML generated successfully: ${outputFile} (language: ${language})`

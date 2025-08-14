@@ -24,7 +24,12 @@ function loadTranslations(language = "en") {
 // Main function to generate documentation
 function collectionToHTML(inputFile, options = {}) {
   // Extract options with defaults
-  const { outputFile = "api-doc.html", language = "en", logo = null } = options;
+  const {
+    outputFile = "api-doc.html",
+    language = "en",
+    logo = null,
+    divider = null,
+  } = options;
 
   // Validate input file is a string
   if (typeof inputFile !== "string") {
@@ -49,6 +54,14 @@ function collectionToHTML(inputFile, options = {}) {
   // Validate logo is a string or null
   if (logo !== null && typeof logo !== "string") {
     throw new Error("Logo SVG must be a string or null.");
+  }
+
+  // Validate divider is a valid heading level or null
+  if (
+    divider !== null &&
+    !["h1", "h2", "h3", "h4", "h5", "h6"].includes(divider)
+  ) {
+    throw new Error("Divider must be one of: h1, h2, h3, h4, h5, h6, or null.");
   }
 
   // Load translations
@@ -108,7 +121,8 @@ function collectionToHTML(inputFile, options = {}) {
     postmanCollection,
     converter,
     translations,
-    logo
+    logo,
+    divider
   );
   fs.writeFileSync(outputFile, htmlContent);
 
@@ -119,7 +133,8 @@ function generateHtmlDocumentation(
   collection,
   converter,
   translations,
-  logo = null
+  logo = null,
+  divider = null
 ) {
   // Extract the collection info
   const { info, item: folders } = collection;
@@ -217,8 +232,10 @@ function generateHtmlDocumentation(
             margin-bottom: 1rem;
         }
 
-        h2 {
-            border-bottom: 1px solid var(--border-color);
+        ${
+          divider
+            ? `${divider} { border-bottom: 1px solid var(--border-color); }`
+            : null
         }
   
         p {
