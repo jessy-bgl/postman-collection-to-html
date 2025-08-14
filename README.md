@@ -1,8 +1,14 @@
-# Postman collection to HTML Converter
+# Postman Collection to HTML Converter
 
-A command-line tool to convert Postman collection v2.1 into HTML documentation with internationalization support.
+A Node.js tool that converts Postman collection v2.1 into HTML document.
 
 https://www.npmjs.com/package/postman-collection-to-html
+
+## Features
+
+- Convert Postman collection JSON files into HTML document
+- Multi-language support (English and French)
+- Custom logo embedding
 
 ## Installation
 
