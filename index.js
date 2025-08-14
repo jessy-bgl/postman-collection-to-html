@@ -228,7 +228,7 @@ function generateHtmlDocumentation(
         }
         
         h1, h2, h3, h4, h5, h6 {
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
             margin-bottom: 1rem;
         }
 
